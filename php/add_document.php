@@ -37,10 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (move_uploaded_file($file['tmp_name'], $targetPath)) {
 
         // ✅ Lưu vào CSDL
-        $stmt = $conn->prepare("
-            INSERT INTO tailieu (tentailieu, danhmucid, nguoiupload, fileupload, phi, ngayupload)
-            VALUES (?, ?, ?, ?, ?, NOW())
-        ");
+       $stmt = $conn->prepare("
+    INSERT INTO tailieu (tentailieu, danhmucid, nguoiupload, fileupload, phi, ngayupload, trangthai)
+    VALUES (?, ?, ?, ?, ?, NOW(), 'choduyet')
+");
+
 
         // Thứ tự: tên tài liệu, id danh mục, id người upload, tên file, phí
         $stmt->bind_param("siisd", $tenTaiLieu, $danhMuc, $user_id, $fileName, $phi);

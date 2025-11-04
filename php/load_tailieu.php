@@ -9,10 +9,10 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$userID = $_SESSION['user_id'];
+$userID = $_SESSION['user_id']; 
 $role   = $_SESSION['role'] ?? 'user';
 
-// 🧭 Nếu là admin thì load tất cả, nếu không thì chỉ load của chính user
+// 🧭 Nếu là admin thì load tất cả tài liệu
 if ($role === 'admin') {
     $sql = "
         SELECT 
@@ -21,6 +21,7 @@ if ($role === 'admin') {
             t.fileupload, 
             t.phi, 
             t.ngayupload, 
+            t.trangthai,
             d.tendanhmuc AS ten_danh_muc,
             u.hoten AS ten_nguoi_upload
         FROM tailieu t
@@ -29,7 +30,9 @@ if ($role === 'admin') {
         ORDER BY t.id DESC
     ";
     $stmt = $conn->prepare($sql);
+
 } else {
+    // 🧍 Người đăng tải → chỉ thấy tài liệu của chính mình (mọi trạng thái)
     $sql = "
         SELECT 
             t.id, 
@@ -37,6 +40,7 @@ if ($role === 'admin') {
             t.fileupload, 
             t.phi, 
             t.ngayupload, 
+            t.trangthai,
             d.tendanhmuc AS ten_danh_muc,
             u.hoten AS ten_nguoi_upload
         FROM tailieu t
@@ -54,8 +58,13 @@ $result = $stmt->get_result();
 
 $data = [];
 while ($row = $result->fetch_assoc()) {
+    // Format lại ngày upload
+    $row['ngayupload'] = date('Y-m-d H:i:s', strtotime($row['ngayupload']));
     $data[] = $row;
 }
 
 echo json_encode(['success' => true, 'data' => $data]);
+
+$stmt->close();
+$conn->close();
 ?>
