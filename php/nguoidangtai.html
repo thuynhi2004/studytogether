@@ -592,30 +592,6 @@
       // ========== EVENT HANDLERS ==========
 
       // Xử lý thêm tài liệu
-      function handleAddDocument(e) {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-
-        fetch("add_document.php", {
-          method: "POST",
-          body: formData,
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.success) {
-              alert("✅ Thêm tài liệu thành công!");
-              e.target.reset();
-              closeModal("addDocument");
-              loadDocuments();
-            } else {
-              alert("❌ Lỗi: " + data.message);
-            }
-          })
-          .catch((err) => {
-            console.error("Lỗi gửi form:", err);
-            alert("Không thể thêm tài liệu.");
-          });
-      }
 
       // Xử lý sửa tài liệu
       function handleEditDocument(e) {
@@ -703,6 +679,44 @@
               if (dm.tendanhmuc === selectedDanhMuc) opt.selected = true;
               select.appendChild(opt);
             });
+          });
+      }
+    </script>
+    <script>
+      // Khi trang tải xong
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("addDocumentForm");
+
+        // Gắn sự kiện submit
+        if (form) {
+          form.addEventListener("submit", handleAddDocument);
+        }
+      });
+
+      // Hàm xử lý thêm tài liệu
+      function handleAddDocument(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+
+        fetch("add_document.php", {
+          method: "POST",
+          body: formData,
+          credentials: "include", // ⚠️ bắt buộc để gửi cookie session
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              alert("✅ Thêm tài liệu thành công!");
+              e.target.reset();
+              closeModal("addDocument");
+              loadDocuments(); // nếu bạn có hàm này
+            } else {
+              alert("❌ Lỗi: " + data.message);
+            }
+          })
+          .catch((err) => {
+            console.error("Lỗi gửi form:", err);
+            alert("Không thể thêm tài liệu.");
           });
       }
     </script>

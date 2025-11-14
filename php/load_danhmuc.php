@@ -2,8 +2,8 @@
 include 'connect.php';
 header('Content-Type: application/json; charset=utf-8');
 
-// Câu truy vấn chính xác — lưu ý tên cột phải trùng với trong database
-$sql = "SELECT id, tendanhmuc, created_at, icon FROM danhmuc";
+// ✅ Bỏ dấu phẩy thừa trước FROM
+$sql = "SELECT id, tendanhmuc, created_at FROM danhmuc";
 $result = $conn->query($sql);
 
 $danhmucs = [];
@@ -13,7 +13,6 @@ if ($result && $result->num_rows > 0) {
         $danhmucs[] = [
             'id' => $row['id'],
             'tendanhmuc' => $row['tendanhmuc'],
-            'icon' => $row['icon'],
             'created_at' => $row['created_at']
         ];
     }

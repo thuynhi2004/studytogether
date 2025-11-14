@@ -1,348 +1,196 @@
-<?php
-session_start();
-
-// Giả lập dữ liệu người dùng đã đăng nhập
-$isLoggedIn = true;
-$user = [
-    'name' => 'Nguyễn Văn A',
-    'avatar' => '👤'
-];
-?>
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyTogether - Nền tảng chia sẻ tài liệu học tập</title>
-    <link rel="stylesheet" href="../css/index.css">
+    <title>StudyTogether</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="../css/index.css">
 
-    <style>
-        /* 🟡 CSS đơn giản cho phần bố cục 3 cột */
-        .main-layout {
-            display: grid;
-            grid-template-columns: 20% 60% 20%;
-            gap: 10px;
-            padding: 15px;
-        }
-        .column {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            min-height: 400px;
-        }
-        .column h2 {
-            font-size: 18px;
-            margin-bottom: 10px;
-            border-bottom: 2px solid #000;
-            padding-bottom: 5px;
-        }
-
-      
-         /* --- GRID CHỨA CÁC CARD --- */
-        .cards-container {
-         display: grid;
-         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-         gap: 70px;
-        padding: 20px;
-        }
-
-         /* --- CARD CHÍNH --- */
-          .doc-card {
-         background: #fff;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.25s ease;
-  display: flex;
-  flex-direction: column;
- }
-
-  .doc-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
-  }
-
-   /* --- ẢNH TRÊN CÙNG --- */
-  .doc-thumb {
-  background: linear-gradient(135deg, #7b6ef6, #5ac8fa);
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  }
-
-  .doc-thumb img {
-  width: 90px;
-  height: 90px;
-  object-fit: contain;
-  border-radius: 10px;
-  }
-
-  /* --- THÂN CARD --- */
-  .doc-body {
-  padding: 16px 18px 14px;
-  }
-
-  /* --- TAG DANH MỤC --- */
-  .category-tag {
-  display: inline-block;
-  background: #eef2ff;
-  color: #4f46e5;
-  font-weight: 500;
-  font-size: 13px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  }
-
-  /* --- TIÊU ĐỀ --- */
-  .doc-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 4px 0 6px;
-  line-height: 1.4;
-  }
-
-  /* --- NGƯỜI UPLOAD --- */
-  .doc-author {
-  color: #475569;
-  font-size: 14px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
- }
-
-  /* --- THỐNG KÊ DƯỚI --- */
- .doc-stats {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13.5px;
-  color: #64748b;
-  border-top: 1px solid #f1f5f9;
-  padding-top: 10px;
- }
-
- .doc-stats span {
-  display: flex;
-  align-items: center;
-  gap: 4px;
- }
- 
-/* //////////////////////////////////////////////////////////// */
-.doc-thumb {
-  height: 160px;
-  background: #ddd url('uploads/ten_anh.jpg') center/cover no-repeat;
-}
-.doc-card {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  width: 260px;
-  transition: transform 0.2s ease;
-  cursor: pointer;
-}
-
-.doc-card:hover {
-  transform: translateY(-4px);
-}
-
-.doc-thumb {
-  height: 140px; /* ảnh chỉ chiếm nửa trên */
-}
-
-.doc-body {
-  padding: 15px;
-  text-align: left;
-}
-.doc-card {
-  width: 250px;
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.doc-thumb {
-  position: relative;
-  width: 100%;
-  height: 150px; /* đặt chiều cao cố định cho ảnh */
-  overflow: hidden;
-}
-
-.doc-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* phần mờ dần ở dưới ảnh */
-.doc-thumb::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 40%;
-  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, white 100%);
-  pointer-events: none;
-}
-
-.doc-body {
-  padding: 10px 15px;
-}
-
-
-    </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo-section">
-                <div class="logo-icon">🎓</div>
-                <div class="logo-text">StudyTogether</div>
-            </div>
-            
-            <nav class="header-nav">
-                <a href="#" class="nav-link">Trang chủ</a>
-                <a href="#" class="nav-link">Danh mục</a>
-                <a href="#" class="nav-link hot-link">🔥Tài liệu hot</a>
-                <a href="#" class="nav-link">Về chúng tôi</a>
-            </nav>
+<header>
+  <div class="logo" id="logo" style="cursor: pointer;">🎓StudyTogether</div>
+  <nav>
+    <div class="menu-item">
+      <a href="#">Danh mục ▾</a>
 
-            <div class="header-actions">
-                <button class="btn-upload" onclick="window.location.href='dkdn.php'">Đăng kí tài khoản</button>
-
-                <?php if ($isLoggedIn): ?>
-                    <div class="user-avatar"><?php echo $user['avatar']; ?></div>
-                <?php else: ?>
-                    <button class="btn-upload" 
-                        style="background: white; color: #667eea; border: 2px solid #667eea;"
-                        onclick="window.location.href='dkdn.php'">
-                        Đăng nhập
-                    </button>
-                <?php endif; ?>
-            </div>
+      <!-- 🔽 Mega Menu -->
+      <div class="mega-menu">
+        <div class="mega-column">
+          <h4>Khoa học Nghiên cứu</h4>
+          <li><a href="danhmuc.php?danhmuc=1" class="<?= ($_GET['danhmuc'] ?? '') == 1 ? 'active' : '' ?>">Toán học</a></li>
+          <li><a href="danhmuc.php?danhmuc=2" class="<?= ($_GET['danhmuc'] ?? '') == 2 ? 'active' : '' ?>">Khoa học tự nhiên</a></li>
+          <li><a href="danhmuc.php?danhmuc=3" class="<?= ($_GET['danhmuc'] ?? '') == 3 ? 'active' : '' ?>">Khoa học xã hội</a></li>
+          <li><a href="danhmuc.php?danhmuc=6" class="<?= ($_GET['danhmuc'] ?? '') == 6 ? 'active' : '' ?>">Ngữ văn – Ngôn ngữ học</a></li>
+          <li><a href="danhmuc.php?danhmuc=8" class="<?= ($_GET['danhmuc'] ?? '') == 8 ? 'active' : '' ?>">Tâm lý học – Xã hội học</a></li>
         </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>🎓 Cùng nhau học tập hiệu quả hơn!</h1>
-            <p>Nền tảng chia sẻ tài liệu học tập miễn phí cho sinh viên Việt Nam</p>
-            
-            <div class="search-bar">
-                <input type="text" class="search-input" placeholder="Tìm kiếm tài liệu, môn học, giáo trình...">
-                <button class="search-btn">🔍 Tìm kiếm</button>
-            </div>
+        <div class="mega-column">
+          <h4>Khoa học Ứng dụng </h4>
+           <li><a href="danhmuc.php?danhmuc=4" class="<?= ($_GET['danhmuc'] ?? '') == 4 ? 'active' : '' ?>">Ngoại ngữ</a></li>
+           <li><a href="danhmuc.php?danhmuc=5" class="<?= ($_GET['danhmuc'] ?? '') == 5 ? 'active' : '' ?>">Công nghệ thông tin / Lập trình</a></li>
+           <li><a href="danhmuc.php?danhmuc=7" class="<?= ($_GET['danhmuc'] ?? '') == 7 ? 'active' : '' ?>">Kinh tế – Quản trị – Marketing</a></li>
+          
         </div>
-    </section>
-
-    <!-- 🧱 Bố cục 3 phần chính -->
-   
-        <div class="main-layout">
-            <!-- Cột 1: Bài viết admin -->
-            <div class="column">
-                <h2>📰 Bài viết từ Admin</h2>
-                <div class="doc-card">📢 Cập nhật tính năng mới</div>
-                <div class="doc-card">💡 Hướng dẫn đăng tài liệu</div>
-                <div class="doc-card">🧠 Mẹo học tập hiệu quả</div>
-            </div>
-
-       
-           <!-- Cột 2: Card tài liệu -->
-<div class="column" id="main-content">
-    <h2>🔥 Tài liệu phổ biến</h2>
-    <div class="cards-container">
-        <?php
-        include 'connect.php';
-
-        $sql = "SELECT t.*, d.tendanhmuc, u.hoten 
-                FROM tailieu t
-                LEFT JOIN danhmuc d ON t.danhmucid = d.id
-                LEFT JOIN users u ON t.nguoiupload = u.id
-                WHERE t.trangthai = 'daduyet'
-                ORDER BY t.id DESC";
-        $result = $conn->query($sql);
-
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-
-                // ✅ Thư mục chứa ảnh thực tế
-                $uploadPath = __DIR__ . "/uploads/";
-                $webPath    = "php/uploads/"; // đường dẫn dùng cho trình duyệt
-
-  $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
-
-    // ✅ Sửa lại đường dẫn file thật — KHÔNG thêm "php/" nữa
-    if (!empty($row['trangbia']) && file_exists(__DIR__ . "/uploads/" . $row['trangbia'])) {
-    $thumbnail = $basePath . "/uploads/" . $row['trangbia'];
-   } else {
-    $thumbnail = $basePath . "/uploads/default-doc.jpg";
-   }
-
-
-                // ✅ Hiển thị card tài liệu
-                echo '
-                <div class="doc-card" onclick="hienThiChiTietTaiLieu(' . $row['id'] . ')">
-                   <div class="doc-thumb" style="
-    background: url(\'' . htmlspecialchars($thumbnail) . '\') center/cover no-repeat;
-"></div>
-
-                    <div class="doc-body">
-                        <span class="category-tag">' . htmlspecialchars($row['tendanhmuc'] ?? 'Chưa có') . '</span>
-                        <h3 class="doc-title">' . htmlspecialchars($row['tentailieu']) . '</h3>
-                        <p class="doc-author">👤 ' . htmlspecialchars($row['hoten'] ?? 'Không rõ') . '</p>
-                        <div class="doc-stats">
-                            <span title="Lượt xem">👁️ ' . number_format($row['luotxem'] ?? 0) . '</span>
-                            <span 
-                                title="Lượt tải xuống" 
-                                onclick="event.stopPropagation(); window.location.href=\'download.php?id=' . $row['id'] . '\'">
-                                📥 ' . number_format($row['luottaixuong'] ?? 0) . '
-                            </span>
-                            <span title="Đánh giá">⭐ ' . number_format($row['danhgia'] ?? 4.5, 1) . '</span>
-                        </div>
-                    </div>
-                </div>';
-            }
-        } else {
-            echo "<p>Chưa có tài liệu nào được duyệt.</p>";
-        }
-        ?>
+        <div class="mega-column">
+          <h4>Chuyên mục khác</h4>
+         <li><a href="danhmuc.php?danhmuc=11" class="<?= ($_GET['danhmuc'] ?? '') == 11 ? 'active' : '' ?>">Bài giảng & Slide giảng dạy</a></li>
+         <li><a href="danhmuc.php?danhmuc=9" class="<?= ($_GET['danhmuc'] ?? '') == 9 ? 'active' : '' ?>">Tài liệu thi – Đề cương ôn tập</a></li>
+         <li><a href="danhmuc.php?danhmuc=10" class="<?= ($_GET['danhmuc'] ?? '') == 10 ? 'active' : '' ?>">Tổng hợp kiến thức</a></li>
+        </div>
+      </div>
     </div>
+
+    <a href="#">🔥 Tài liệu hot ▾</a>
+    <a href="#">Về chúng tôi</a>
+    <a href="#">Hỗ trợ</a>
+    <a href="#" class="btn-get-started">Bắt đầu</a>
+  </nav>
+</header>
+
+
+<div class="container">
+  <h1>🎓 Cùng nhau học tập hiệu quả hơn!</h1>
+  <p class="subtitle">
+    Nơi học sinh và giáo viên chia sẻ, tải về hàng nghìn tài liệu học tập chất lượng cao.
+    Miễn phí, dễ dàng và thuận tiện.
+  </p>
+
+  <div class="content-wrapper">
+
+    <!-- 🔹 Sidebar -->
+    <div class="sidebar">
+      <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" class="search-box" placeholder="Tìm kiếm...">
+      </div>
+
+      <h3>Danh mục chính</h3>
+  <ul>
+    <li><a href="danhmuc.php?danhmuc=1" class="<?= ($_GET['danhmuc'] ?? '') == 1 ? 'active' : '' ?>">Toán học</a></li>
+    <li><a href="danhmuc.php?danhmuc=2" class="<?= ($_GET['danhmuc'] ?? '') == 2 ? 'active' : '' ?>">Khoa học tự nhiên</a></li>
+    <li><a href="danhmuc.php?danhmuc=3" class="<?= ($_GET['danhmuc'] ?? '') == 3 ? 'active' : '' ?>">Khoa học xã hội</a></li>
+    <li><a href="danhmuc.php?danhmuc=4" class="<?= ($_GET['danhmuc'] ?? '') == 4 ? 'active' : '' ?>">Ngoại ngữ</a></li>
+    <li><a href="danhmuc.php?danhmuc=5" class="<?= ($_GET['danhmuc'] ?? '') == 5 ? 'active' : '' ?>">Công nghệ thông tin / Lập trình</a></li>
+    <li><a href="danhmuc.php?danhmuc=6" class="<?= ($_GET['danhmuc'] ?? '') == 6 ? 'active' : '' ?>">Ngữ văn – Ngôn ngữ học</a></li>
+    <li><a href="danhmuc.php?danhmuc=7" class="<?= ($_GET['danhmuc'] ?? '') == 7 ? 'active' : '' ?>">Kinh tế – Quản trị – Marketing</a></li>
+    <li><a href="danhmuc.php?danhmuc=8" class="<?= ($_GET['danhmuc'] ?? '') == 8 ? 'active' : '' ?>">Tâm lý học – Xã hội học</a></li>
+  </ul>
+
+  <h3 style="margin-top: 30px;">Chuyên mục khác</h3>
+  <ul>
+    <li><a href="danhmuc.php?danhmuc=9" class="<?= ($_GET['danhmuc'] ?? '') == 9 ? 'active' : '' ?>">Tài liệu thi – Đề cương ôn tập</a></li>
+    <li><a href="danhmuc.php?danhmuc=10" class="<?= ($_GET['danhmuc'] ?? '') == 10 ? 'active' : '' ?>">Tổng hợp kiến thức</a></li>
+    <li><a href="danhmuc.php?danhmuc=11" class="<?= ($_GET['danhmuc'] ?? '') == 11 ? 'active' : '' ?>">Bài giảng & Slide giảng dạy</a></li>
+  </ul>
+    </div>
+
+    <!-- 🔹 Main content -->
+    <div class="main-content">
+      <div class="category-tabs">
+        <div class="category-tab active" data-target="latest">
+          <div class="category-icon">📄</div>
+          <div class="category-name">Tài liệu mới nhất</div>
+        </div>
+        <div class="category-tab" data-target="contributors">
+          <div class="category-icon">🏆</div>
+          <div class="category-name">Người đóng góp xuất sắc</div>
+        </div>
+        <div class="category-tab" data-target="admin-posts">
+          <div class="category-icon">📝</div>
+          <div class="category-name">Bài viết của Admin</div>
+        </div>
+        <div class="category-tab" data-target="chat-ai">
+          <div class="category-icon">🤖</div>
+          <div class="category-name">IChat - Hỏi đáp với AI</div>
+        </div>
+      </div>
+
+      <!-- 🔹 Nội dung chính -->
+      <div id="latest" class="tab-content active">
+        <div class="featured-card">
+          <div class="featured-content">
+            <div class="handbook-label">StudyTogether</div>
+            <h2 class="featured-title">Cập nhật những tài liệu hot nhất trong tuần</h2>
+            <p class="featured-description">Nơi bạn tìm thấy giáo trình, bài hướng dẫn và tài liệu hữu ích được cập nhật liên tục.</p>
+            <div class="author">
+              <div class="author-avatar"></div>
+              <span>Lane Shackleton</span>
+            </div>
+          </div>
+
+          <div class="featured-image">
+            <div class="device-mockup"></div>
+          </div>
+
+          <a href="#" class="btn-read">Read the handbook</a>
+        </div>
+        
+         <a href="chitiet_tailieu.php?id=<?= $id ?>" 
+   class="doc-card-link" 
+   data-id="<?= $id ?>">
+
+
+
+        <h2 class="section-title">🔥 Tài liệu phổ biến</h2>
+        <section class="content">
+          <div class="column" id="main-content">
+            <div class="cards-container" id="cards-container">
+              <?php include 'get_tailieu.php'; ?>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section id="contributors" class="tab-content">
+         <h2>🏆 Danh sách những hành viên đóng góp xuất sắc</h2>
+         
+         <?php include 'dsnguoidangtai.php'; ?>
+      </section>
+
+
+      <section id="admin-posts" class="tab-content" style="padding:60px 5%; background:#f8f9fa;">
+  <h2 style="font-size:36px; font-weight:700; text-align:center; margin-bottom:16px;">📝 Bài viết của Admin</h2>
+  <p style="text-align:center; font-size:18px; color:#6b7280; margin-bottom:40px;">Tổng hợp các bài viết, hướng dẫn và cập nhật mới từ Admin để bạn luôn nắm bắt thông tin nhanh nhất.</p>
+
+  <div class="admin-post-list" style="display:flex; flex-wrap:wrap; gap:30px; justify-content:center;">
+
+    <!-- Bài viết 1 -->
+    <div class="admin-post-card" style="background:white; border-radius:12px; overflow:hidden; width:350px; box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:transform 0.3s;">
+      <img src="images/toeic-vocab.jpg" alt="Vocabulary for TOEIC" style="width:100%; height:200px; object-fit:cover;">
+      <div style="padding:20px;">
+        <h3 style="font-size:20px; font-weight:600; margin-bottom:10px;">Vocabulary for TOEIC – Bí quyết tăng điểm nhanh</h3>
+        <p style="font-size:14px; color:#6b7280; margin-bottom:12px;">15/11/2025</p>
+        <p style="font-size:16px; color:#374151; margin-bottom:16px;">Học từ vựng thông minh, nâng điểm Reading & Listening chỉ trong vài tháng với bộ tài liệu TOEIC chất lượng.</p>
+        <a href="baiviet1.php" style="display:inline-block; background:#6366f1; color:white; padding:10px 16px; border-radius:6px; font-weight:500; text-decoration:none; transition:background 0.2s;">Xem chi tiết</a>
+      </div>
+    </div>
+
+    <!-- Bài viết 2 -->
+    <div class="admin-post-card" style="background:white; border-radius:12px; overflow:hidden; width:350px; box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:transform 0.3s;">
+      <img src="images/admin-update.jpg" alt="Quy định và cập nhật hệ thống" style="width:100%; height:200px; object-fit:cover;">
+      <div style="padding:20px;">
+        <h3 style="font-size:20px; font-weight:600; margin-bottom:10px;">Quy định, thông báo và cập nhật hệ thống</h3>
+        <p style="font-size:14px; color:#6b7280; margin-bottom:12px;">14/11/2025</p>
+        <p style="font-size:16px; color:#374151; margin-bottom:16px;">Admin cập nhật các quy định và tính năng mới giúp cộng đồng sử dụng hệ thống hiệu quả và an toàn hơn.</p>
+        <a href="baiviet2.php" style="display:inline-block; background:#6366f1; color:white; padding:10px 16px; border-radius:6px; font-weight:500; text-decoration:none; transition:background 0.2s;">Xem chi tiết</a>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+      <section id="chat-ai" class="tab-content">
+        <h2>🤖 IChat - Hỏi đáp với AI</h2>
+        <p>Trò chuyện với AI để được hỗ trợ và giải đáp thắc mắc nhanh nhất.</p>
+      </section>
+      
+    </div>
+  </div>
 </div>
 
 
-
-            <!-- Cột 3: Tài liệu mới nhất -->
-            <div class="column">
-                <h2>📄 Tài liệu mới nhất</h2>
-                <ul>
-                    <li>Python Machine Learning 2025</li>
-                    <li>TOEIC Listening Practice</li>
-                    <li>Marketing căn bản</li>
-                    <li>Data Structures & Algorithms</li>
-                </ul>
-
-                <h2>🏅 Người đóng góp xuất sắc</h2>
-                <ul>
-                    <li>Nguyễn Văn A</li>
-                    <li>Trần Thị B</li>
-                    <li>Phạm Văn C</li>
-                </ul>
-            </div>
-        </div>
-    
 
     <!-- Footer -->
     <footer class="footer">
@@ -380,6 +228,9 @@ $user = [
 
 
 <script>
+document.getElementById('logo').addEventListener('click', function() {
+    window.location.href = 'index.php';
+});
 function hienThiChiTietTaiLieu(id) {
     // Gửi yêu cầu lấy chi tiết tài liệu
     fetch('chitiet_tailieu.php?id=' + id)
@@ -422,7 +273,74 @@ function tangLuotTai(id, tenfile) {
     .catch(err => console.error(err));
 }
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("get_tailieu.php")
+    .then(res => res.text()) // ✅ Đọc HTML, không phải JSON
+    .then(html => {
+      const container = document.getElementById("cards-container");
+      container.innerHTML = html; // Gán luôn HTML trả về
+    })
+    .catch(err => {
+      console.error("Lỗi tải tài liệu:", err);
+    });
+});
 
+document.querySelectorAll('.category-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    // Xóa active cũ
+    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+    // Thêm active mới
+    tab.classList.add('active');
+    const target = tab.getAttribute('data-target');
+    document.getElementById(target).classList.add('active');
+  });
+});
+</script>
+<!-- ///////////////////////// -->
+ <script>
+document.querySelectorAll('.sidebar ul li').forEach(li => {
+  li.addEventListener('click', function() {
+    const danhmucID = this.getAttribute('data-id');
+
+    // Xóa class active cũ
+    document.querySelectorAll('.sidebar ul li').forEach(item => item.classList.remove('active'));
+    this.classList.add('active');
+
+    // Gọi Ajax load tài liệu
+    fetch(`get_tailieu.php?danhmuc=${danhmucID}`)
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('list-tailieu').innerHTML = data;
+      })
+      .catch(error => console.error('Lỗi khi load tài liệu:', error));
+  });
+});
+</script>
+<!-- không cần load lại trang -->
+  <script>
+ document.querySelectorAll('.doc-card-link').forEach(card => {
+    card.addEventListener('click', function (e) {
+        let id = this.dataset.id;
+
+        // Gửi request tăng view
+        fetch("update_view.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "id=" + id
+        });
+
+        // Tăng số mắt trên giao diện
+        let viewSpan = this.querySelector(".doc-stats span i.fa-eye").parentElement;
+        let currentViews = parseInt(viewSpan.innerText.trim().split(" ")[1]);
+        viewSpan.innerHTML = `<i class="fa fa-eye"></i> ${currentViews + 1}`;
+    });
+});
+</script>
 
 </body>
 </html>

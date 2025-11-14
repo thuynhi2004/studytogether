@@ -1,7 +1,8 @@
 <?php
+session_start();
 header('Content-Type: application/json');
 include 'connect.php';
-session_start();
+
 
 // Kiểm tra đăng nhập
 if (!isset($_SESSION['user_id'])) {

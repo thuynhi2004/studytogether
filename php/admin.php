@@ -304,7 +304,7 @@ function getTableConfig(section) {
         },
         'danhmuc': {
             title: 'Quản lý danh mục',
-            headers: ['ID', 'Tên danh mục', 'Icon', 'Ngày', 'Thao tác'],
+            headers: ['ID', 'Tên danh mục', 'Ngày', 'Thao tác'],
             sectionName: 'Danh mục'
         },
         'danhgia': {
@@ -630,49 +630,96 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ========== XỬ LÝ DANH MỤC ==========
 
-// Load danh mục cho modal thêm
+// 🔹 Load danh mục cho modal thêm (dropdown)
 function loadDanhMucForAddModal() {
     const select = document.getElementById('danh_muc');
+
+    if (!select) {
+        console.error("Không tìm thấy phần tử select có id='danh_muc'");
+        return;
+    }
+
     fetch('load_danhmuc.php')
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error("Không thể tải dữ liệu danh mục");
+            return res.json();
+        })
         .then(data => {
+            // reset dropdown
             select.innerHTML = '<option value="">Chọn danh mục</option>';
+
+            if (!data || data.length === 0) {
+                const opt = document.createElement('option');
+                opt.textContent = 'Chưa có danh mục';
+                select.appendChild(opt);
+                return;
+            }
+
             data.forEach(dm => {
-                select.innerHTML += `<option value="${dm.id}">${dm.tendanhmuc}</option>`;
+                const opt = document.createElement('option');
+                opt.value = dm.id;
+                opt.textContent = dm.tendanhmuc;
+                select.appendChild(opt);
             });
         })
         .catch(err => console.error('Lỗi load danh mục:', err));
 }
 
-// Load dữ liệu danh mục
+
+// 🔹 Load danh mục hiển thị trong bảng
 function loadDanhMucData() {
     const tbody = document.querySelector('tbody');
     const emptyState = document.querySelector('.empty-state');
 
+    if (!tbody) {
+        console.error("Không tìm thấy phần tử <tbody>");
+        return;
+    }
+
+    // Xóa dữ liệu cũ (tránh trùng khi reload)
+    tbody.innerHTML = "";
+
     fetch('load_danhmuc.php')
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error("Không thể tải danh mục");
+            return res.json();
+        })
         .then(data => {
-            if (data.length > 0) {
-                emptyState.style.display = 'none';
-                data.forEach(dm => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${dm.id}</td>
-                        <td>${dm.tendanhmuc}</td>
-                        <td>${dm.icon}</td>
-                        <td>${dm.created_at}</td>
-                        <td>
-                            <button class="btn btn-warning btn-sm">Sửa</button>
-                            <button class="btn btn-danger btn-sm">Xóa</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
+            if (!data || data.length === 0) {
+                if (emptyState) emptyState.style.display = 'block';
+                return;
             }
+
+            if (emptyState) emptyState.style.display = 'none';
+
+            data.forEach(dm => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${dm.id}</td>
+                    <td>${dm.tendanhmuc}</td>
+                    <td>${dm.created_at}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="editDanhMuc(${dm.id})">Sửa</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteDanhMuc(${dm.id})">Xóa</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
         })
         .catch(err => console.error('Lỗi load danh mục:', err));
 }
-</script>
 
+// 🔹 (Tùy chọn) Viết khung hàm xử lý Sửa / Xóa
+function editDanhMuc(id) {
+    alert("Sửa danh mục ID: " + id);
+}
+
+function deleteDanhMuc(id) {
+    if (confirm("Bạn có chắc muốn xóa danh mục này không?")) {
+        alert("Đã xóa danh mục ID: " + id);
+        // Có thể gọi API delete_danhmuc.php ở đây
+    }
+}
+</script>                       
 </body>
 </html>
