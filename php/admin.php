@@ -273,6 +273,10 @@ function showTable(section) {
         loadDocumentsData();
     } else if (section === 'danhmuc') {
         loadDanhMucData();
+    }else if (section === 'uploaders') {
+        loadUploaders();
+    }else if (section === 'users') {
+        loadUsers();
     }
 }
 
@@ -720,6 +724,73 @@ function deleteDanhMuc(id) {
         // Có thể gọi API delete_danhmuc.php ở đây
     }
 }
+
+//load người đăng tải
+function loadUploaders() {
+    fetch('load_nguoidangtai.php')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('tbody'); // GIỐNG loadUsers()
+            const emptyState = document.querySelector('.empty-state');
+
+            if (data.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            tbody.innerHTML = data.map(user => `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.hoten}</td>
+                    <td>${user.email}</td>
+                    <td>${user.sdt}</td>
+                    <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        })
+        .catch(error => console.log(error));
+}
+
+//load người dùng
+function loadUsers() {
+    fetch('load_nguoidung.php')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('tbody');
+            const emptyState = document.querySelector('.empty-state');
+
+            if (data.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            tbody.innerHTML = data.map(user => `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.hoten}</td>
+                    <td>${user.email}</td>
+                    <td>${user.sdt}</td>
+                    <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        })
+        .catch(error => console.log(error));
+}
+
 </script>                       
 </body>
 </html>

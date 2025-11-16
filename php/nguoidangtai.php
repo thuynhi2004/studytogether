@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang Quản Trị - Người Đăng Tải</title>
+    <link rel="stylesheet" href="../css/nguoidangtai.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">📚 StudyTogether</div>
+
+        <div class="user-info">
+          <div class="user-avatar">👤</div>
+          <div style="font-weight: 600; margin-bottom: 5px">Nguyễn Văn A</div>
+          <div style="font-size: 14px; opacity: 0.9">Người Đăng Tải</div>
+        </div>
+
+        <ul class="menu">
+          <li class="menu-item active" onclick="showSection('dashboard')">
+            <span class="menu-icon">📊</span>
+            <span>Tổng quan</span>
+          </li>
+          <li class="menu-item" onclick="showSection('documents')">
+            <span class="menu-icon">📄</span>
+            <span>Quản lý tài liệu</span>
+          </li>
+          <li class="menu-item" onclick="showSection('transactions')">
+            <span class="menu-icon">💰</span>
+            <span>Giao dịch tài liệu</span>
+          </li>
+          <li class="menu-item" onclick="showSection('promotions')">
+            <span class="menu-icon">🎁</span>
+            <span>Quản lý khuyến mãi</span>
+          </li>
+          <li class="menu-item" onclick="showSection('reviews')">
+            <span class="menu-icon">⭐</span>
+            <span>Quản lý đánh giá</span>
+          </li>
+          <li class="menu-item" onclick="showSection('contacts')">
+            <span class="menu-icon">📧</span>
+            <span>Quản lý liên hệ</span>
+          </li>
+          <li class="menu-item" onclick="showSection('statistics')">
+            <span class="menu-icon">📈</span>
+            <span>Thống kê</span>
+          </li>
+          <li class="menu-item logout" style="text-decoration: none;">
+  <a href="logout.php">
+    <span class="menu-icon">🚪</span>
+    <span>Đăng xuất</span>
+  </a>
+</li>
+
+        </ul>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <div class="header">
+          <h1>Trang Quản Trị Người Đăng Tải</h1>
+          <div class="header-actions">
+            <button class="btn btn-secondary">Trợ giúp</button>
+            <button class="btn btn-primary" onclick="openModal('addDocument')">
+              + Thêm tài liệu
+            </button>
+          </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <!--<div id="dashboard" class="content-section active">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-header">
+                <div
+                  class="stat-icon"
+                  style="background: #e6f7ff; color: #1890ff"
+                >
+                  📄
+                </div>
+              </div>
+              <div class="stat-value">45</div>
+              <div class="stat-label">Tổng tài liệu</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <div
+                  class="stat-icon"
+                  style="background: #fff7e6; color: #fa8c16"
+                >
+                  ⬇️
+                </div>
+              </div>
+              <div class="stat-value">1,234</div>
+              <div class="stat-label">Lượt tải xuống</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <div
+                  class="stat-icon"
+                  style="background: #f6ffed; color: #52c41a"
+                >
+                  💰
+                </div>
+              </div>
+              <div class="stat-value">15,750,000</div>
+              <div class="stat-label">Doanh thu (VNĐ)</div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <div
+                  class="stat-icon"
+                  style="background: #fff1f0; color: #f5222d"
+                >
+                  ⭐
+                </div>
+              </div>
+              <div class="stat-value">4.5/5</div>
+              <div class="stat-label">Đánh giá trung bình</div>
+            </div>
+          </div>
+
+          <div
+            style="
+              background: white;
+              padding: 25px;
+              border-radius: 10px;
+              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            "
+          >
+            <h3 style="margin-bottom: 15px; color: #2d3748">
+              Tài liệu được tải nhiều nhất
+            </h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Tên tài liệu</th>
+                  <th>Danh mục</th>
+                  <th>Lượt tải</th>
+                  <th>Doanh thu</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Giáo trình Lập trình Web</td>
+                  <td>Công nghệ thông tin</td>
+                  <td>245</td>
+                  <td>4,900,000 VNĐ</td>
+                </tr>
+                <tr>
+                  <td>Bài tập Toán cao cấp A1</td>
+                  <td>Toán học</td>
+                  <td>198</td>
+                  <td>Miễn phí</td>
+                </tr>
+                <tr>
+                  <td>Tài liệu ôn thi Tiếng Anh B1</td>
+                  <td>Ngoại ngữ</td>
+                  <td>245</td>
+                  <td>4,900,000 VNĐ</td>
+                </tr>
+                <tr>
+                  <td>Đề cương môn Cấu trúc dữ liệu</td>
+                  <td>Công nghệ thông tin</td>
+                  <td>198</td>
+                  <td>7,000,000 VNĐ</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>-->
+
+        <!-- Documents Section -->
+        <div id="documents" class="content-section">
+          <div class="section-header">
+            <h2 class="section-title">Quản lý tài liệu</h2>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="search-bar">
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Tìm kiếm tài liệu..."
+            />
+            <button class="btn btn-primary" id="searchButton">Tìm kiếm</button>
+          </div>
+
+          <!-- Documents Table -->
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tên tài liệu</th>
+                <th>Danh mục</th>
+                <th>Người upload</th>
+                <th>File</th>
+                <th>Trang bìa</th>
+                <th>Phí</th>
+                <th>Ngày upload</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="documentTableBody">
+              <tr>
+                <td colspan="8" style="text-align: center">
+                  Đang tải dữ liệu...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <!-- ========== MODALS ========== -->
+
+    <!-- Add Document Modal -->
+    <div id="addDocumentModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('addDocument')">&times;</span>
+        <h2>Thêm tài liệu mới</h2>
+
+        <form id="addDocumentForm" enctype="multipart/form-data">
+          <label>Tên tài liệu:</label>
+          <input type="text" name="ten_tai_lieu" required />
+
+          <label>Danh mục:</label>
+          <select id="danh_muc" name="danh_muc" required></select>
+
+          <label>Phí:</label>
+          <input type="number" name="phi" required />
+
+          <label>Chọn file:</label>
+          <input
+            type="file"
+            name="file"
+            accept=".pdf,.doc,.docx,.ppt,.pptx"
+            required
+          />
+          <label>Trang bìa:</label>
+          <input type="file" name="trangbia" accept="image/*" required />
+
+          <button type="submit" class="btn btn-success">Lưu tài liệu</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Document Modal -->
+    <div id="editDocumentModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('editDocument')">&times;</span>
+        <h2>Cập nhật tài liệu</h2>
+
+        <form
+          id="editDocumentForm"
+          enctype="multipart/form-data"
+          class="document-form"
+        >
+          <input type="hidden" name="id" id="edit_id" />
+
+          <div class="form-group">
+            <label for="edit_title">Tên tài liệu:</label>
+            <input type="text" name="ten_tai_lieu" id="edit_title" required />
+          </div>
+
+          <div class="form-group">
+            <label for="edit_danh_muc">Danh mục:</label>
+            <select id="edit_danh_muc" name="danh_muc" required></select>
+          </div>
+
+          <div class="form-group">
+            <label for="edit_phi">Phí:</label>
+            <input type="number" name="phi" id="edit_phi" required />
+          </div>
+
+          <div class="form-group">
+            <label for="edit_file">File mới (nếu muốn thay):</label>
+            <input
+              type="file"
+              id="edit_file"
+              name="file"
+              accept=".pdf,.doc,.docx,.ppt,.pptx"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="edit_trangbia">Trang bìa mới (nếu muốn thay):</label>
+            <input
+              type="file"
+              id="edit_trangbia"
+              name="trangbia"
+              accept="image/*"
+            />
+            <div id="preview_trangbia" style="margin-top: 10px">
+              <!-- Ảnh xem trước sẽ hiển thị ở đây -->
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-success">
+              💾 Lưu thay đổi
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ========== SCRIPTS ========== -->
+
+    <script>
+      // ========== BIẾN TOÀN CỤC ==========
+      let currentSection = "dashboard";
+
+      // ========== HÀM CHÍNH ==========
+
+      // Khởi tạo ứng dụng
+      document.addEventListener("DOMContentLoaded", () => {
+        initEventListeners();
+        loadDocuments();
+        showSection(currentSection);
+      });
+
+      // Khởi tạo event listeners
+      function initEventListeners() {
+        // Form thêm tài liệu
+        document
+          .getElementById("addDocumentForm")
+          .addEventListener("submit", handleAddDocument);
+
+        // Form sửa tài liệu
+        document
+          .getElementById("editDocumentForm")
+          .addEventListener("submit", handleEditDocument);
+
+        // Tìm kiếm tài liệu
+        document
+          .getElementById("searchButton")
+          .addEventListener("click", handleSearch);
+      }
+
+      // Hiển thị section
+      function showSection(sectionId) {
+        // Ẩn tất cả các section
+        const sections = document.querySelectorAll(".content-section");
+        sections.forEach((sec) => (sec.style.display = "none"));
+
+        // Hiện section được chọn
+        const active = document.getElementById(sectionId);
+        if (active) {
+          active.style.display = "block";
+          currentSection = sectionId;
+        } else {
+          console.warn("Không tìm thấy section:", sectionId);
+        }
+      }
+
+      // ========== QUẢN LÝ TÀI LIỆU ==========
+
+      // Tải danh sách tài liệu
+      function loadDocuments(keyword = "") {
+        const tbody = document.getElementById("documentTableBody");
+        tbody.innerHTML =
+          '<tr><td colspan="8" style="text-align:center;">Đang tải dữ liệu...</td></tr>';
+
+        fetch("load_tailieu_user.php")
+          .then((res) => res.json())
+          .then((data) => {
+            tbody.innerHTML = "";
+
+            if (!data.success || data.data.length === 0) {
+              tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">Chưa có tài liệu nào</td></tr>`;
+              return;
+            }
+
+            const filtered = data.data.filter((item) =>
+              item.tentailieu.toLowerCase().includes(keyword.toLowerCase())
+            );
+
+            if (filtered.length === 0) {
+              tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">Không tìm thấy kết quả</td></tr>`;
+              return;
+            }
+
+            renderDocumentsTable(filtered, tbody);
+          })
+          .catch((err) => {
+            console.error("Lỗi tải tài liệu:", err);
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:red;">Không thể tải dữ liệu</td></tr>`;
+          });
+      }
+
+      // 🟢 Render bảng tài liệu
+
+      function renderDocumentsTable(documents, tbody) {
+        tbody.innerHTML = "";
+
+        documents.forEach((item) => {
+          const fileDisplay = getFileDisplay(item);
+          console.log("📄 item:", item);
+
+          // 🟢 Nếu là admin thì hiển thị dropdown chọn trạng thái
+          let statusHTML = "";
+          if (window.userRole === "admin") {
+            statusHTML = `
+        <select class="form-select form-select-sm status-dropdown" data-id="${
+          item.id
+        }">
+          <option value="choduyet" ${
+            item.trangthai === "choduyet" ? "selected" : ""
+          }>⏳ Chờ duyệt</option>
+          <option value="daduyet" ${
+            item.trangthai === "daduyet" ? "selected" : ""
+          }>✅ Đã duyệt</option>
+          <option value="tuchoi" ${
+            item.trangthai === "tuchoi" ? "selected" : ""
+          }>❌ Từ chối</option>
+        </select>
+      `;
+          } else {
+            // 🧑‍💻 Người đăng tải chỉ xem trạng thái, không được chỉnh
+            switch (item.trangthai) {
+              case "daduyet":
+                statusHTML = `<span style="color: green; font-weight: 600;">✅ Đã duyệt</span>`;
+                break;
+              case "tuchoi":
+                statusHTML = `<span style="color: red; font-weight: 600;">❌ Từ chối</span>`;
+                break;
+              default:
+                statusHTML = `<span style="color: orange; font-weight: 600;">⏳ Chờ duyệt</span>`;
+                break;
+            }
+          }
+
+          // 🧱 Tạo hàng
+          const row = `
+      <tr data-id="${item.id}">
+        <td>${item.id}</td>
+        <td>${item.tentailieu}</td>
+        <td>${item.ten_danh_muc || "—"}</td>
+        <td>${item.ten_nguoi_upload || "—"}</td>
+        <td>${fileDisplay}</td>
+<td>
+  ${
+    item.trangbia
+      ? `<img src="${item.trangbia}" 
+               width="100" height="100" 
+               style="object-fit:cover;border-radius:6px;">`
+      : "—"
+  }
+</td>
+
+
+
+
+        <td>${item.phi ? item.phi + " VNĐ" : "Miễn phí"}</td>
+        <td>${item.ngayupload}</td>
+        <td>${statusHTML}</td>
+        <td>
+          <div class="action-buttons">
+            <button class="btn btn-sm btn-edit" onclick="editDocument(${
+              item.id
+            })">Sửa</button>
+            <button class="btn btn-sm btn-delete" onclick="deleteDocument(${
+              item.id
+            })">Xóa</button>
+          </div>
+        </td>
+      </tr>
+    `;
+
+          tbody.insertAdjacentHTML("beforeend", row);
+        });
+
+        // 🟢 Nếu là admin → gắn sự kiện cho dropdown
+        if (window.userRole === "admin") {
+          document.querySelectorAll(".status-dropdown").forEach((select) => {
+            select.addEventListener("change", async (e) => {
+              const id = select.dataset.id;
+              const newStatus = select.value;
+
+              // ⚙️ Khóa các lựa chọn không hợp lệ
+              select
+                .querySelectorAll("option")
+                .forEach((opt) => (opt.disabled = false));
+
+              if (newStatus === "daduyet") {
+                select.querySelector(
+                  'option[value="choduyet"]'
+                ).disabled = true;
+                select.querySelector('option[value="tuchoi"]').disabled = true;
+              } else if (newStatus === "tuchoi") {
+                select.querySelector(
+                  'option[value="choduyet"]'
+                ).disabled = true;
+                select.querySelector('option[value="daduyet"]').disabled = true;
+              }
+
+              try {
+                const res = await fetch("update_trangthai.php", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                  },
+                  body: new URLSearchParams({ id, trangthai: newStatus }),
+                });
+                const result = await res.json();
+
+                alert(result.message || "Cập nhật trạng thái thành công!");
+              } catch (err) {
+                console.error("Lỗi cập nhật trạng thái:", err);
+                alert("❌ Lỗi khi cập nhật trạng thái!");
+              }
+            });
+          });
+        }
+      }
+
+      // ✅ Hàm hiển thị file upload
+      function getFileDisplay(item) {
+        if (!item.fileupload) {
+          return `<span class="text-danger">Không có file</span>`;
+        }
+
+        let filePath = item.fileupload.trim();
+
+        // Nếu database chỉ lưu tên file (ví dụ: "abc.pdf") thì thêm đường dẫn gốc:
+        if (!filePath.startsWith("http")) {
+          filePath = `http://localhost/doan4/php/uploads/${filePath}`;
+        }
+
+        // Lấy phần mở rộng file
+        const fileExt = filePath.split(".").pop().toLowerCase();
+
+        // ✅ Xử lý theo loại file
+        if (fileExt === "pdf") {
+          return `<embed src="${filePath}" type="application/pdf" width="100" height="100" style="border:none;">`;
+        } else if (["jpg", "jpeg", "png", "gif"].includes(fileExt)) {
+          return `<img src="${filePath}" width="100" height="100"
+             style="object-fit:cover;border-radius:6px;"
+             onerror="this.src='no-image.png'">`;
+        } else {
+          return `<a href="${filePath}" target="_blank">📎 Tải xuống</a>`;
+        }
+      }
+
+      // ========== XỬ LÝ DANH MỤC ==========
+
+      // Tải danh mục vào dropdown
+      function loadDanhMuc(selectId) {
+        fetch("load_danhmuc.php")
+          .then((res) => res.json())
+          .then((data) => {
+            const select = document.getElementById(selectId);
+            select.innerHTML = '<option value="">Chọn danh mục</option>';
+            data.forEach((dm) => {
+              const option = document.createElement("option");
+              option.value = dm.id;
+              option.textContent = dm.tendanhmuc;
+              select.appendChild(option);
+            });
+          })
+          .catch((err) => console.error("Lỗi tải danh mục:", err));
+      }
+
+      // ========== MODAL FUNCTIONS ==========
+
+      // Mở modal
+      function openModal(modalName) {
+        const modal = document.getElementById(`${modalName}Modal`);
+        if (modalName === "addDocument") loadDanhMuc("danh_muc");
+        modal.style.display = "flex";
+      }
+
+      // Đóng modal
+      function closeModal(modalName) {
+        document.getElementById(`${modalName}Modal`).style.display = "none";
+      }
+
+      // ========== EVENT HANDLERS ==========
+
+      // Xử lý thêm tài liệu
+
+      // Xử lý sửa tài liệu
+      function handleEditDocument(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+
+        fetch("nguoidangtaisua.php", {
+          method: "POST",
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            alert(data.message);
+            if (data.success) {
+              closeModal("editDocument");
+              loadDocuments();
+            }
+          })
+          .catch((err) => console.error("Lỗi cập nhật:", err));
+      }
+
+      // Xử lý tìm kiếm
+      function handleSearch() {
+        const keyword = document.getElementById("searchInput").value.trim();
+        loadDocuments(keyword);
+      }
+
+      // ========== DOCUMENT ACTIONS ==========
+
+      // Xóa tài liệu
+      function deleteDocument(id) {
+        if (!confirm("Bạn có chắc muốn xóa tài liệu này không?")) return;
+
+        fetch("nguoidangtaixoa.php", {
+          method: "POST",
+          body: new URLSearchParams({ id }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            alert(data.message);
+            if (data.success) loadDocuments();
+          })
+          .catch((err) => console.error("Lỗi xóa tài liệu:", err));
+      }
+
+      // Sửa tài liệu
+      function editDocument(id) {
+        fetch("load_tailieu_user.php")
+          .then((res) => res.json())
+          .then((data) => {
+            const doc = data.data.find((item) => item.id == id);
+            if (!doc) return alert("Không tìm thấy tài liệu!");
+
+            // 🖼️ Hiển thị ảnh bìa hiện tại
+            const previewDiv = document.getElementById("preview_trangbia");
+            if (doc.trangbia) {
+              previewDiv.innerHTML = `<img src="uploads/${doc.trangbia}" width="150" height="150" style="object-fit:cover;border-radius:8px;">`;
+            } else {
+              previewDiv.innerHTML = "<p>Chưa có trang bìa</p>";
+            }
+
+            // Điền dữ liệu vào form
+            document.getElementById("edit_id").value = doc.id;
+            document.getElementById("edit_title").value = doc.tentailieu;
+            document.getElementById("edit_phi").value = doc.phi || 0;
+
+            // Tải danh mục cho form sửa
+            loadDanhMucForEdit(doc.ten_danh_muc);
+
+            openModal("editDocument");
+          });
+      }
+
+      // Tải danh mục cho form sửa
+      function loadDanhMucForEdit(selectedDanhMuc) {
+        fetch("load_danhmuc.php")
+          .then((r) => r.json())
+          .then((cats) => {
+            const select = document.getElementById("edit_danh_muc");
+            select.innerHTML = "";
+            cats.forEach((dm) => {
+              const opt = document.createElement("option");
+              opt.value = dm.id;
+              opt.textContent = dm.tendanhmuc;
+              if (dm.tendanhmuc === selectedDanhMuc) opt.selected = true;
+              select.appendChild(opt);
+            });
+          });
+      }
+    </script>
+    <script>
+      // Khi trang tải xong
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("addDocumentForm");
+
+        // Gắn sự kiện submit
+        if (form) {
+          form.addEventListener("submit", handleAddDocument);
+        }
+      });
+
+      // Hàm xử lý thêm tài liệu
+      function handleAddDocument(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+
+        fetch("add_document.php", {
+          method: "POST",
+          body: formData,
+          credentials: "include", // ⚠️ bắt buộc để gửi cookie session
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              alert("✅ Thêm tài liệu thành công!");
+              e.target.reset();
+              closeModal("addDocument");
+              loadDocuments(); // nếu bạn có hàm này
+            } else {
+              alert("❌ Lỗi: " + data.message);
+            }
+          })
+          .catch((err) => {
+            console.error("Lỗi gửi form:", err);
+            alert("Không thể thêm tài liệu.");
+          });
+      }
+    </script>
+  </body>
+</html>

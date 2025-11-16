@@ -154,6 +154,7 @@ $motaThanhToan = "TTTaiLieu" . time() . $userId;
         </div>
 
         <a href="xacnhan_thanhtoan.php?id=<?= $id ?>&code=<?= $motaThanhToan ?>" class="pay-btn">✔ Tôi đã chuyển khoản</a>
+        <a href="chitiet_tailieu.php?id=<?= $id ?>" class="pay-btn">Quay lại</a>
     </div>
 
 

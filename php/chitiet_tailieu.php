@@ -1,4 +1,6 @@
 <?php
+session_start(); 
+
 include 'connect.php';
 
 // Lấy ID tài liệu
@@ -97,7 +99,86 @@ $data = $result->fetch_assoc();
     <a href="#">🔥 Tài liệu hot ▾</a>
     <a href="#">Về chúng tôi</a>
     <a href="#">Hỗ trợ</a>
-    <a href="#" class="btn-get-started">Bắt đầu</a>
+    <?php if (isset($_SESSION['user_name'])): ?>
+
+    <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'nguoitinhphi'): ?>
+
+        <!-- ADMIN hoặc NGƯỜI TÍNH PHÍ -->
+        <div class="user-menu" style="
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            background: #f3f3f3;
+            padding: 6px 12px;
+            border-radius: 8px;
+        ">
+            <span style="font-weight:600; color:black;">
+                👤 <?= $_SESSION['user_name']; ?>
+            </span>
+
+            <!-- Nút quản trị -->
+            <a href="<?=
+                ($_SESSION['role'] == 'admin') 
+                ? 'admin.php' 
+                : 'nguoidangtai.php';
+            ?>" 
+                style="
+                    background:#007bff;
+                    color:white;
+                    padding:6px 10px;
+                    border-radius:6px;
+                    text-decoration:none;
+                ">
+                Quản trị
+            </a>
+
+            <a href="logout.php" 
+                style="
+                    background:#dc3545;
+                    color:white;
+                    padding:6px 10px;
+                    border-radius:6px;
+                    text-decoration:none;
+                ">
+                Đăng xuất
+            </a>
+        </div>
+
+    <?php else: ?>
+
+        <!-- KHÁCH HÀNG: GIỮ NGUYÊN CODE CŨ -->
+        <div class="user-menu" style="
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            background: #f3f3f3;
+            padding: 6px 12px;
+            border-radius: 8px;
+        ">
+            <span style="font-weight:600; color:black;">
+                👤 <?= $_SESSION['user_name']; ?>
+            </span>
+
+            <a href="logout.php" 
+                style="
+                    background:#dc3545;
+                    color:white;
+                    padding:6px 10px;
+                    border-radius:6px;
+                    text-decoration:none;
+                ">
+                Đăng xuất
+            </a>
+        </div>
+
+    <?php endif; ?>
+
+<?php else: ?>
+
+    <!-- Chưa đăng nhập -->
+    <a href="dkdn.php" class="btn-get-started">Đăng nhập</a>
+
+<?php endif; ?>
   </nav>
 </header>
 
@@ -282,42 +363,104 @@ else {
      ">
   
   <div style="
-        width:420px;
-        background:white;
-        padding:25px;
-        border-radius:15px;
-        animation:popupShow 0.25s ease;
-      ">
+    width:420px;
+    background:white;
+    padding:28px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.12);
+    animation:popupShow 0.28s ease;
+    font-family:'Segoe UI', sans-serif;
+">
 
-      <h2 style="margin-bottom:10px">Thanh toán tài liệu</h2>
-      <p>Giá: <b>10.000đ</b></p>
+    <h2 style="
+        margin-bottom:12px;
+        font-size:22px;
+        font-weight:600;
+        color:#333;
+        text-align:center;
+    ">
+      Thanh toán tài liệu
+    </h2>
 
-      <button onclick="confirmPayment()" 
-        style="
-          width:100%;
-          padding:12px;
-          background:#28a745;
-          border:none;
-          border-radius:8px;
-          font-size:16px;
-          color:white;
-          margin-top:15px;
-        ">
-        Xác nhận thanh toán
-      </button>
+    <p style="
+        font-size:16px;
+        text-align:center;
+        margin-bottom:20px;
+        color:#444;
+    ">
+        Giá: <b style="color:#28a745; font-size:18px;">10.000đ</b>
+    </p>
 
-      <button onclick="closePopup()"
-        style="
-          width:100%;
-          padding:12px;
-          background:#ccc;
-          border:none;
-          border-radius:8px;
-          margin-top:8px;
-        ">
-        Hủy
-      </button>
-  </div>
+    <!-- Nút QR -->
+    <button onclick="confirmPayment()" 
+      style="
+        width:100%;
+        padding:14px;
+        background:linear-gradient(135deg, #28a745, #1e8d38);
+        border:none;
+        border-radius:10px;
+        font-size:16px;
+        color:white;
+        font-weight:600;
+        cursor:pointer;
+        transition:0.25s;
+        box-shadow:0 4px 12px rgba(40,167,69,0.45);
+        margin-bottom:12px;
+      "
+      onmouseover="this.style.opacity='0.9'"
+      onmouseout="this.style.opacity='1'"
+    >
+      💚 Thanh toán bằng mã QR
+    </button>
+
+    <!-- Nút VNPAY -->
+    <button onclick="vnpay()" 
+      style="
+        width:100%;
+        padding:14px;
+        background:linear-gradient(135deg, #007bff, #0056d2);
+        border:none;
+        border-radius:10px;
+        font-size:16px;
+        color:white;
+        font-weight:600;
+        cursor:pointer;
+        transition:0.25s;
+        box-shadow:0 4px 12px rgba(0,123,255,0.45);
+        margin-bottom:12px;
+      "
+      onmouseover="this.style.opacity='0.9'"
+      onmouseout="this.style.opacity='1'"
+    >
+      🔵 Thanh toán Online (VNPAY)
+    </button>
+    <script>
+function vnpay() {
+    window.location.href = "vnpay_create_payment.php?id=<?php echo $id; ?>";
+}
+</script>
+
+    <!-- Nút Hủy -->
+    <button onclick="closePopup()"
+      style="
+        width:100%;
+        padding:12px;
+        background:#f1f1f1;
+        border:none;
+        border-radius:10px;
+        font-size:15px;
+        color:#333;
+        cursor:pointer;
+        transition:0.25s;
+      "
+      onmouseover="this.style.background='#e2e2e2'"
+      onmouseout="this.style.background='#f1f1f1'"
+    >
+      ❌ Hủy
+    </button>
+
+</div>
+
 </div>
 
 <style>

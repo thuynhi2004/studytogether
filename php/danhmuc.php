@@ -1,4 +1,8 @@
-<?php include 'connect.php';
+<?php 
+
+include 'connect.php';
+ 
+session_start(); 
 
 // Lấy ID danh mục từ URL
 $danhmuc_id = isset($_GET['danhmuc']) ? intval($_GET['danhmuc']) : 0;
@@ -64,7 +68,86 @@ if ($danhmuc_id > 0) {
     <a href="#">🔥 Tài liệu hot ▾</a>
     <a href="#">Về chúng tôi</a>
     <a href="#">Hỗ trợ</a>
-    <a href="#" class="btn-get-started">Bắt đầu</a>
+    <?php if (isset($_SESSION['user_name'])): ?>
+
+    <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'nguoitinhphi'): ?>
+
+        <!-- ADMIN hoặc NGƯỜI TÍNH PHÍ -->
+        <div class="user-menu" style="
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            background: #f3f3f3;
+            padding: 6px 12px;
+            border-radius: 8px;
+        ">
+            <span style="font-weight:600; color:black;">
+                👤 <?= $_SESSION['user_name']; ?>
+            </span>
+
+            <!-- Nút quản trị -->
+            <a href="<?=
+                ($_SESSION['role'] == 'admin') 
+                ? 'admin.php' 
+                : 'nguoidangtai.php';
+            ?>" 
+                style="
+                    background:#007bff;
+                    color:white;
+                    padding:6px 10px;
+                    border-radius:6px;
+                    text-decoration:none;
+                ">
+                Quản trị
+            </a>
+
+            <a href="logout.php" 
+                style="
+                    background:#dc3545;
+                    color:white;
+                    padding:6px 10px;
+                    border-radius:6px;
+                    text-decoration:none;
+                ">
+                Đăng xuất
+            </a>
+        </div>
+
+    <?php else: ?>
+
+        <!-- KHÁCH HÀNG: GIỮ NGUYÊN CODE CŨ -->
+        <div class="user-menu" style="
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            background: #f3f3f3;
+            padding: 6px 12px;
+            border-radius: 8px;
+        ">
+            <span style="font-weight:600; color:black;">
+                👤 <?= $_SESSION['user_name']; ?>
+            </span>
+
+            <a href="logout.php" 
+                style="
+                    background:#dc3545;
+                    color:white;
+                    padding:6px 10px;
+                    border-radius:6px;
+                    text-decoration:none;
+                ">
+                Đăng xuất
+            </a>
+        </div>
+
+    <?php endif; ?>
+
+<?php else: ?>
+
+    <!-- Chưa đăng nhập -->
+    <a href="dkdn.php" class="btn-get-started">Đăng nhập</a>
+
+<?php endif; ?>
   </nav>
 </header>
 
